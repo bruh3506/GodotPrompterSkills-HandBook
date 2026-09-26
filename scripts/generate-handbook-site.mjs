@@ -13,6 +13,7 @@ const SITE = path.join(ROOT, 'handbook/site');
 const GENERATED = path.join(SITE, '.vitepress/generated');
 const ZH_PAGES = path.join(SITE, 'zh/skills');
 const HASH_FILE = path.join(CONTENT, 'zh/source-hashes.json');
+const CATALOG_FILE = path.join(CONTENT, 'zh/skill-catalog.json');
 const refreshHashes = process.argv.includes('--refresh-source-hashes');
 const checkOnly = process.argv.includes('--check-only');
 
@@ -97,6 +98,31 @@ async function loadGuides() {
   return entries;
 }
 
+// The catalog carries its own short copy for "what it does / when to use it / one
+// example" so the index page can be scanned as a table. It is written by hand rather
+// than extracted from the guides, so it is validated here and reviewed against the
+// English source whenever a source fingerprint goes stale.
+async function loadCatalog() {
+  const catalog = JSON.parse(await readFile(CATALOG_FILE, 'utf8'));
+  const known = index.skills.map((skill) => skill.name);
+  const missing = known.filter((name) => !catalog[name]);
+  const unknown = Object.keys(catalog).filter((name) => !known.includes(name));
+  if (missing.length) throw new Error(`Skill catalog is missing entries (${missing.length}): ${missing.join(', ')}`);
+  if (unknown.length) throw new Error(`Skill catalog lists unknown skills: ${unknown.join(', ')}`);
+
+  const invalid = [];
+  for (const [name, entry] of Object.entries(catalog)) {
+    for (const field of ['what', 'when', 'example']) {
+      const value = entry[field];
+      if (typeof value !== 'string' || !value.trim() || value.includes('\n')) invalid.push(`${name}.${field}`);
+    }
+  }
+  if (invalid.length) {
+    throw new Error(`Skill catalog fields must be non-empty single lines: ${invalid.join(', ')}`);
+  }
+  return catalog;
+}
+
 async function readSourceHashes() {
   try {
     return JSON.parse(await readFile(HASH_FILE, 'utf8'));
@@ -128,21 +154,34 @@ function referenceTitle(sourcePath) {
   return readFile(path.join(ROOT, sourcePath), 'utf8').then((content) => getHeading(content, path.basename(sourcePath, '.md')));
 }
 
-async function createSkillIndex(guides) {
+async function createSkillIndex(guides, catalog, staleSkills) {
+  const stale = new Set(staleSkills);
   const lines = [
+    '---',
+    'pageClass: skill-catalog',
+    '---',
+    '',
     '# 技能目录',
     '',
-    '按主题浏览技能，或使用页面顶部的搜索框查找概念、节点、系统和英文术语。每篇中文说明都可以展开对应的英文技能原文。',
+    '全部技能按主题排在下面：先看它**能干什么**，再看**什么时候用**，最后是一个具体场景。点击技能名进入完整的中文说明和英文原文；页面顶部的搜索也能直接查到这里的文字。',
     '',
   ];
 
+  if (staleSkills.length) {
+    lines.push(
+      `> 带 ⚠ 标记的技能，其英文原文在本页文案撰写之后有过改动（共 ${staleSkills.length} 个）。请先对照原文复核表格内容，再运行 \`npm run handbook:refresh-source-hashes\`。`,
+      '',
+    );
+  }
+
   for (const category of categories) {
     lines.push(`## ${category.title}`, '');
+    lines.push('| 技能 | 能干什么 | 什么时候用 | 举例 |', '| --- | --- | --- | --- |');
     for (const skillName of category.skills) {
-      const guide = guides.get(skillName).content;
-      const title = getHeading(guide, skillName);
-      const description = guide.split(/\r?\n/).find((line) => line.trim() && !line.startsWith('#'))?.trim();
-      lines.push(`- [${title}](/zh/skills/${skillName})${description ? ` — ${description}` : ''}`);
+      const entry = catalog[skillName];
+      const title = getHeading(guides.get(skillName).content, skillName);
+      const marker = stale.has(skillName) ? ' ⚠' : '';
+      lines.push(`| [${title}](/zh/skills/${skillName})${marker} | ${entry.what} | ${entry.when} | ${entry.example} |`);
     }
     lines.push('');
   }
@@ -198,10 +237,7 @@ async function mirrorEnglishSources() {
   }
 }
 
-async function createGeneratedMetadata(guides, baselineHashes, liveHashes) {
-  const staleSkills = index.skills
-    .filter((skill) => !baselineHashes[skill.name] || baselineHashes[skill.name] !== liveHashes[skill.name])
-    .map((skill) => skill.name);
+async function createGeneratedMetadata(guides, staleSkills) {
   const sidebar = {
     categories: categories.map((category) => ({
       title: category.title,
@@ -220,6 +256,7 @@ async function createGeneratedMetadata(guides, baselineHashes, liveHashes) {
 
 validateCatalog();
 const guides = await loadGuides();
+const catalog = await loadCatalog();
 const liveHashes = await currentSourceHashes();
 let baselineHashes = await readSourceHashes();
 
@@ -232,16 +269,16 @@ if (refreshHashes) {
 const staleSkills = index.skills.filter((skill) => !baselineHashes[skill.name] || baselineHashes[skill.name] !== liveHashes[skill.name]);
 
 if (checkOnly) {
-  console.log(`Handbook content check passed: ${guides.size}/${index.skills.length} skill guides; ${Object.keys(summaries).length} reference summaries.`);
+  console.log(`Handbook content check passed: ${guides.size}/${index.skills.length} skill guides; ${Object.keys(catalog).length} catalog entries; ${Object.keys(summaries).length} reference summaries.`);
   if (staleSkills.length) console.warn(`English source changed; review these guides: ${staleSkills.map((skill) => skill.name).join(', ')}`);
   process.exit(0);
 }
 
 await rm(ZH_PAGES, { recursive: true, force: true });
 await mkdir(ZH_PAGES, { recursive: true });
-await createSkillIndex(guides);
+await createSkillIndex(guides, catalog, staleSkills);
 await createSkillPages(guides);
 await mirrorEnglishSources();
-const stale = await createGeneratedMetadata(guides, baselineHashes, liveHashes);
+await createGeneratedMetadata(guides, staleSkills);
 console.log(`Generated VitePress pages for ${guides.size} skills and ${index.skills.reduce((count, skill) => count + (skill.references?.length ?? 0), 0)} English reference docs.`);
-if (stale.length) console.warn(`Chinese learning guides to review: ${stale.join(', ')}`);
+if (staleSkills.length) console.warn(`Chinese learning guides to review: ${staleSkills.join(', ')}`);

@@ -11,6 +11,31 @@
   margin: 2rem 0;
 }
 
+/* 目录页的四列速查表：正文比其它页面宽一些，窄屏改为横向滚动 */
+.skill-catalog .VPDoc.has-aside .content-container {
+  max-width: 1080px;
+}
+
+.skill-catalog .vp-doc table {
+  font-size: 0.875rem;
+}
+
+.skill-catalog .vp-doc th,
+.skill-catalog .vp-doc td {
+  padding: 0.5rem 0.7rem;
+  vertical-align: top;
+}
+
+.skill-catalog .vp-doc th:first-child,
+.skill-catalog .vp-doc td:first-child {
+  min-width: 170px;
+}
+
+.skill-catalog .vp-doc th:not(:first-child),
+.skill-catalog .vp-doc td:not(:first-child) {
+  min-width: 205px;
+}
+
 .source-stale {
   border: 1px solid #e7a93b;
   border-radius: 8px;
