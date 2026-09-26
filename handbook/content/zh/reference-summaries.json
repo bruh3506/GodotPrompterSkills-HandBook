@@ -1,0 +1,13 @@
+{
+  "skills/ai-navigation/references/chase-attack.md": "把导航移动组织成追踪与攻击两段：先靠近目标，再在攻击距离内执行动作；同时处理目标离开范围、路径尚未更新等状态变化。",
+  "skills/animation-system/references/state-machine-examples.md": "通过场景树和动画状态示例说明怎样拆分动作、设置过渡，并避免把游戏逻辑状态和动画播放状态混为一谈。",
+  "skills/ability-system/references/stat-modifiers.md": "说明属性修正如何叠加、移除和恢复，适合设计力量增益、减速等限时效果，并避免效果结束后数值残留。",
+  "skills/gdscript-patterns/references/common-idioms.md": "收集常见 GDScript 写法及其适用场景，可在熟悉语法后用来统一代码风格、减少重复判断。",
+  "skills/godot-ui/references/theme-system.md": "从 Theme 资源和主题类型解释怎样集中管理控件样式，让按钮、标签等界面元素保持一致且便于整体换肤。",
+  "skills/input-handling/references/gamepad.md": "讲解手柄按键、摇杆轴与死区设置，帮助处理不同控制器的输入差异和摇杆轻微漂移。",
+  "skills/localization/references/rtl-support.md": "介绍从右向左书写语言的界面适配，包括布局方向、文本对齐和混排检查，避免只翻译文字却让界面方向不合适。",
+  "skills/math-essentials/references/game-math-recipes.md": "把向量、距离、插值等数学操作写成常见游戏问题的配方，可直接对照角色朝向、移动和瞄准需求查找。",
+  "skills/physics-system/references/raycasting-recipes.md": "按用途展示射线检测做法，例如判断脚下地面、检查视线和探测交互目标，并说明结果需要如何解释。",
+  "skills/responsive-ui/references/mobile.md": "汇总移动端屏幕比例、触控区域和安全边距等界面注意事项，便于同一套 UI 适配手机和平板。",
+  "skills/save-load/references/version-migration.md": "讲解存档格式升级：读取旧版本数据后补默认值或转换字段，再保存为新格式，避免游戏更新后旧存档无法使用。"
+}

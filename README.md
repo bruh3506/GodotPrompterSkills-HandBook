@@ -4,6 +4,8 @@
 [![Godot 4.x](https://img.shields.io/badge/Godot-4.3+-blue.svg)](https://godotengine.org)
 [![Skills: 56](https://img.shields.io/badge/Skills-56-green.svg)](#available-skills)
 
+[📘 中文技能学习手册 / Chinese learning handbook](https://bruh3506.github.io/GodotPrompterSkills-HandBook/)
+
 Agentic skills framework for Godot 4.x game development. Gives AI coding agents domain-specific expertise for GDScript and C# projects.
 
 Inspired by and built on top of the [Superpowers](https://github.com/obra/superpowers) plugin for Claude Code — which provides the underlying skill loading, brainstorming, and workflow infrastructure that GodotPrompter extends with Godot-specific domain knowledge.

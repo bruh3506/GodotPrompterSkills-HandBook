@@ -1,0 +1,64 @@
+:root {
+  --vp-c-brand-1: #2878c7;
+  --vp-c-brand-2: #1e68b0;
+  --vp-c-brand-3: #155998;
+  --vp-c-brand-soft: rgb(40 120 199 / 14%);
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #2878c7 18%, #29a783 88%);
+}
+
+.english-source-wrap {
+  margin: 2rem 0;
+}
+
+.source-stale {
+  border: 1px solid #e7a93b;
+  border-radius: 8px;
+  background: rgb(231 169 59 / 12%);
+  padding: 0.8rem 1rem;
+  color: var(--vp-c-text-1);
+}
+
+.english-source {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  background: var(--vp-c-bg-soft);
+  padding: 0.9rem 1rem;
+}
+
+.english-source > summary {
+  cursor: pointer;
+  color: var(--vp-c-brand-1);
+  font-weight: 650;
+}
+
+.source-open-link {
+  margin: 1rem 0;
+}
+
+.source-markdown {
+  border-top: 1px solid var(--vp-c-divider);
+  margin-top: 1rem;
+  max-height: 75vh;
+  overflow: auto;
+  padding: 1rem 0.25rem 0;
+}
+
+.source-markdown h1 {
+  font-size: 1.6rem;
+}
+
+.source-markdown pre {
+  overflow: auto;
+}
+
+.source-markdown table {
+  display: block;
+  overflow-x: auto;
+}
+
+@media (max-width: 640px) {
+  .source-markdown {
+    max-height: 60vh;
+  }
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "core-process",
+    "title": "核心与工作流程",
+    "skills": ["using-godot-prompter", "godot-project-setup", "godot-brainstorming", "godot-grill", "godot-code-review", "godot-debugging", "godot-testing", "godot-mentor"]
+  },
+  {
+    "id": "architecture",
+    "title": "架构与模式",
+    "skills": ["scene-organization", "state-machine", "event-bus", "component-system", "resource-pattern", "dependency-injection"]
+  },
+  {
+    "id": "world-and-physics",
+    "title": "物理、2D、3D 与 XR",
+    "skills": ["physics-system", "2d-essentials", "3d-essentials", "xr-development"]
+  },
+  {
+    "id": "gameplay",
+    "title": "玩法系统",
+    "skills": ["player-controller", "input-handling", "animation-system", "tween-animation", "audio-system", "inventory-system", "dialogue-system", "save-load", "ai-navigation", "ability-system", "camera-system", "localization", "procedural-generation"]
+  },
+  {
+    "id": "ui",
+    "title": "界面与 HUD",
+    "skills": ["godot-ui", "responsive-ui", "hud-system"]
+  },
+  {
+    "id": "multiplayer",
+    "title": "多人游戏",
+    "skills": ["multiplayer-basics", "multiplayer-sync", "dedicated-server"]
+  },
+  {
+    "id": "rendering",
+    "title": "渲染与视觉效果",
+    "skills": ["shader-basics", "particles-vfx"]
+  },
+  {
+    "id": "shipping",
+    "title": "构建、优化与发布",
+    "skills": ["export-pipeline", "godot-optimization", "addon-development", "assets-pipeline", "mobile-development"]
+  },
+  {
+    "id": "scripting",
+    "title": "脚本语言",
+    "skills": ["gdscript-patterns", "gdscript-advanced", "csharp-godot", "csharp-signals"]
+  },
+  {
+    "id": "native-and-threads",
+    "title": "原生扩展与多线程",
+    "skills": ["gdextension", "multithreading"]
+  },
+  {
+    "id": "math",
+    "title": "数学与数据",
+    "skills": ["math-essentials"]
+  },
+  {
+    "id": "addons",
+    "title": "第三方插件",
+    "skills": ["limboai", "beehave", "popochiu", "dialogue-manager", "phantom-camera"]
+  }
+]

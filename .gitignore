@@ -18,6 +18,14 @@ export_presets.cfg
 # Build
 node_modules/
 
+# Generated GitHub Pages source mirrors and VitePress output
+/handbook/site/public/source/
+/handbook/site/zh/
+/handbook/site/.vitepress/generated/
+/handbook/site/.vitepress/.temp/
+/handbook/site/.vitepress/cache/
+/handbook/site/.vitepress/dist/
+
 # tests/plugin-test (and any nested .claude/ scaffolding)
 .claude/
 # Share project-level Claude Code settings with contributors;

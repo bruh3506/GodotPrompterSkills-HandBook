@@ -16,7 +16,13 @@
     "check:codex-agents": "node scripts/sync-codex-agents.mjs --check",
     "build:skill-index": "node scripts/generate-skill-index.mjs --write",
     "check:skill-index": "node scripts/generate-skill-index.mjs --check",
-    "validate:platform-metadata": "node scripts/validate-platform-metadata.mjs"
+    "validate:platform-metadata": "node scripts/validate-platform-metadata.mjs",
+    "predev:handbook": "node scripts/generate-handbook-site.mjs",
+    "dev:handbook": "vitepress dev handbook/site",
+    "prebuild:handbook": "node scripts/generate-handbook-site.mjs",
+    "build:handbook": "vitepress build handbook/site",
+    "check:handbook": "node scripts/generate-handbook-site.mjs --check-only",
+    "handbook:refresh-source-hashes": "node scripts/generate-handbook-site.mjs --refresh-source-hashes"
   },
   "keywords": [
     "godot",
@@ -36,5 +42,10 @@
   "optionalDependencies": {
     "@anthropic-ai/tokenizer": "^0.0.4",
     "js-tiktoken": "^1.0.20"
+  },
+  "devDependencies": {
+    "markdown-it": "^14.3.2",
+    "markdown-it-anchor": "^10.0.0",
+    "vitepress": "^1.6.4"
   }
 }
