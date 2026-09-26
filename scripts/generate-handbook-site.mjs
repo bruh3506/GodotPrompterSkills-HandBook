@@ -163,7 +163,7 @@ async function createSkillIndex(guides, catalog, staleSkills) {
     '',
     '# 技能目录',
     '',
-    '全部技能按主题排在下面：先看它**能干什么**，再看**什么时候用**，最后是一个具体场景。点击技能名进入完整的中文说明和英文原文；页面顶部的搜索也能直接查到这里的文字。',
+    '全部技能按主题排在下面：先看它**能干什么**，再看**什么时候用**，最后是一个具体场景。技能名下面那行就是 Codex 里的调用名 —— 在对话里输入 `$` 加上它（例如 `$player-controller`），agent 就会加载对应技能。点击技能名还能进入完整的中文说明和英文原文。',
     '',
   ];
 
@@ -181,7 +181,7 @@ async function createSkillIndex(guides, catalog, staleSkills) {
       const entry = catalog[skillName];
       const title = getHeading(guides.get(skillName).content, skillName);
       const marker = stale.has(skillName) ? ' ⚠' : '';
-      lines.push(`| [${title}](/zh/skills/${skillName})${marker} | ${entry.what} | ${entry.when} | ${entry.example} |`);
+      lines.push(`| [${title}](/zh/skills/${skillName})${marker}<br>\`$${skillName}\` | ${entry.what} | ${entry.when} | ${entry.example} |`);
     }
     lines.push('');
   }
@@ -206,7 +206,10 @@ async function createSkillPages(guides) {
       ? `\n\n## 深入参考资料\n\n以下资料保留英文原文；已有中文导读的条目会直接显示摘要。\n\n${referenceLinks.join('\n')}`
       : '\n\n## 深入参考资料\n\n这个技能目前没有单独的参考资料页。';
     const originalSection = `\n\n## 英文原文\n\n<EnglishSource skill="${skill.name}" />\n`;
-    const withStatus = guide.replace(/^(# .+)(\r?\n)/, `$1$2\n<SourceFreshness skill="${skill.name}" />\n`);
+    const withStatus = guide.replace(
+      /^(# .+)(\r?\n)/,
+      `$1$2\n<SourceFreshness skill="${skill.name}" />\n\nCodex 调用名：\`$${skill.name}\`\n`,
+    );
     await writeFile(path.join(ZH_PAGES, `${skill.name}.md`), `${withStatus}${referencesSection}${originalSection}`);
   }
 
